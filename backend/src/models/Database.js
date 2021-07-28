@@ -79,6 +79,20 @@ class Database {
             throw new Error(error)
         }
     }
+
+    async aggregate(query, sort = {}) {
+        const {client, collection} = await this._getMongoClientAndCollection()
+
+        try {
+            const documents = await collection.aggregate(query).sort(sort).toArray()
+
+            client.close()
+
+            return documents
+        } catch (error) {
+            throw new Error(error)
+        }
+    }
 }
 
 module.exports = Database

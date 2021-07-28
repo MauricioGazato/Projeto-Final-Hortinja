@@ -1,6 +1,6 @@
 const httpStatus = require('http-status')
 const {Horticultural} = require('../models')
-const {safeObject, safeObjectId} = require('../helpers')
+const {safeObjectId, safeDouble} = require('../helpers')
 
 const methods = {
 
@@ -8,7 +8,17 @@ const methods = {
        const horticultural = new Horticultural()
 
        try {
-           const horticulturals = await horticultural.list({deletedAt: {$exists: false}})
+           const horticulturals = await horticultural.aggregate([
+              { $match: { deletedAt: { $exists: false } } },
+              {
+                  $lookup: {
+                      from: 'categories',
+                      localField: 'categoryId',
+                      foreignField: '_id',
+                      as: 'category'
+                  }
+              }
+            ],{createdAt: -1})
 
            response.status(httpStatus.OK).json(horticulturals)
        } catch (error) {
@@ -17,16 +27,16 @@ const methods = {
     },
 
     async create(request, response) {
-        const {name, shade, image, description, category_id, average_price, measurement} = request.body
+        const {name, shade, image, description, categoryId, average_price, measurement} = request.body
 
         const horticultural = new Horticultural()
 
-        if(!name || !image || !category_id || !average_price || !measurement){ 
-            return response.status(httpStatus.BAD_REQUEST).json({error: 'The fields "name", "image", "category_id", "average_price" and "Measurement" are both required'})
+        if(!name || !image || !categoryId || !average_price || !measurement){ 
+            return response.status(httpStatus.BAD_REQUEST).json({error: 'The fields "name", "image", "categoryId", "average_price" and "Measurement" are both required'})
         }
 
         try {
-            const insertedObject = await horticultural.insertOne({name, shade, image, description, category_id, average_price,
+            const insertedObject = await horticultural.insertOne({name, shade, image, description, categoryId: safeObjectId(categoryId), average_price: safeDouble(average_price),
                                                                   measurement, createdAt: Date.now(), updatedAt: Date.now()})
 
             response.status(httpStatus.CREATED).json(insertedObject)
@@ -51,17 +61,16 @@ const methods = {
 
     async update(request, response){
         const {id} = request.params
-        const {name, shade, image, description, category_id, average_price, measurement} = request.body
+        const {name, shade, image, description, categoryId, average_price, measurement} = request.body
         const convertedObjectId = safeObjectId(id)
 
         const horticultural = new Horticultural()
 
-        if(!name || !shade || !image || !description || !category_id || !average_price || !measurement){ 
-            return response.status(httpStatus.BAD_REQUEST).json({error: 'All fields are required'})
+        if(!name || !image || !categoryId || !average_price || !measurement){ 
+            return response.status(httpStatus.BAD_REQUEST).json({error: 'The fields "name", "image", "categoryId", "average_price" and "Measurement" are both required'})
         }
-
         try {
-            const updatedObject = await horticultural.updateOne({ _id:convertedObjectId }, {name, shade, image, description, category_id, 
+            const updatedObject = await horticultural.updateOne({ _id:convertedObjectId }, {name, shade, image, description, categoryId, 
                                                                   average_price, measurement, updatedAt: Date.now()})
 
             response.status(httpStatus.OK).json(updatedObject)
