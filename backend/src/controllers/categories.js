@@ -1,6 +1,6 @@
 const httpStatus = require('http-status')
 const {Category} = require('../models')
-const {safeObject, safeObjectId} = require('../helpers')
+const { safeObjectId} = require('../helpers')
 
 const methods = {
 
