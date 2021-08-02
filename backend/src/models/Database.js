@@ -93,6 +93,7 @@ class Database {
             throw new Error(error)
         }
     }
+
 }
 
 module.exports = Database

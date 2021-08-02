@@ -17,10 +17,11 @@ const methods = {
                       foreignField: '_id',
                       as: 'category'
                   }
-              }
+              },
             ],{createdAt: -1})
 
            response.status(httpStatus.OK).json(horticulturals)
+           console.log(horticulturals.length)
        } catch (error) {
             response.status(httpStatus.INTERNAL_SERVER_ERROR).json(error)
        }

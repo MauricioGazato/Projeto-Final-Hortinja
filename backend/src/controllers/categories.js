@@ -67,21 +67,6 @@ const methods = {
             response.status(httpStatus.INTERNAL_SERVER_ERROR).json(error)
         }
 
-    },
-
-    async destroy(request, response){
-        const {id} = request.params
-        const convertedObjectId = safeObjectId(id)
-
-        const category = new Category()
-
-        try {
-            const destroyedObject = await category.updateOne({ _id:convertedObjectId }, {deletedAt: Date.now()})
-
-            response.status(httpStatus.NO_CONTENT).json()
-        } catch (error) {
-            response.status(httpStatus.INTERNAL_SERVER_ERROR).json(error)
-        }
     }
 }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Flex, Image, Select, Input, IconButton, Box } from "@chakra-ui/react"
+import { Flex, Image, Select, Input, IconButton, Box, Text, Divider } from "@chakra-ui/react"
 import { AiTwotoneFilter, AiFillCaretDown } from 'react-icons/ai'
 import Logo from '../../assets/Logo.svg'
 import BgInfos from '../../assets/Background_infos.svg'
@@ -10,35 +10,43 @@ export const Home = () => {
             bg='#D9D2CF'
             flexDirection='column'
             justifyContent='space-between'
-            minWidth='100vh'
+            minHeight='100vh'
         >
-            {/* Header */}
+            {/* Inicio Header */}
             <Flex
                 bg='#FFF'
                 paddingY='2'
-                height='80px'
+                alignItems='center'
             >
-                <Flex align='center' margin='auto'>
-                    <Image src={Logo} alt='Hortinja Logo' marginX='20'/>
-                    <Flex flexDirection='row'>
-                        <Select icon={<AiFillCaretDown />} placeholder="Selecionar Categoria" borderRadius='100px' minWidth='35vh' marginRight='10px'/>
-                        <Input placeholder='Buscar Hortaliça' borderRadius='100px' minWidth='35vh' /> 
-                        <IconButton icon={<AiTwotoneFilter />} bg='#006B5C' borderRadius='100px' marginRight='20vh' marginLeft='3' />
-                    </Flex>
-                </Flex>
+                <Image src={Logo} alt='Hortinja Logo' marginLeft='20%' marginRight='20' />
+                <Select icon={<AiFillCaretDown />} placeholder="Selecionar Categoria" borderRadius='100px' bg='#D9D2CF' maxWidth='320px' />
+                <Input placeholder='Buscar Hortaliça' borderRadius='100px' minWidth='35vh' bg='#D9D2CF' maxWidth='320px' /> 
+                <IconButton 
+                    icon={<AiTwotoneFilter />} 
+                    bg='#006B5C' 
+                    borderRadius='100px' 
+                    marginRight='20vh' 
+                    marginLeft='3' 
+                    onClick={ () => console.log("Abrir Modal")} 
+                />
             </Flex>
             {/* Fim Header */}
 
-            {/* Inicio Dashboard */}
+            {/* Inicio Conteudo */}
+             <Flex flexDirection='column' minHeight='80vh' minWidth='70vh' alignItems='center' paddingTop='5'>
 
-            <Flex margin='auto'>
-                <Image src={BgInfos} alt='Background_Infos' marginTop='5vh'/>
-                <Flex bg='FFFFFF' margin='auto'>
-                    
-                </Flex>
-            </Flex>
+                
 
-            {/* Fim Dashboard */}
+             </Flex>
+             {/* Fim Conteudo */}
+
+            {/* Inicio Footer */}
+            <Box marginY='4'>
+                <Text textAlign='center' fontSize='15px' color='gray'> 
+                    Copyright © 2021 Feito com ❤ por Kazap Tecnologia - Todos os direitos reservados
+                </Text>
+            </Box>
+            {/* Fim Footer */}
 
         </Flex>
     )
